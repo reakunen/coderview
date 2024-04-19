@@ -20,6 +20,7 @@ import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import { useToast } from './ui/use-toast'
 import { Textarea } from '@/components/ui/textarea'
 import 'react-datepicker/dist/react-datepicker.css'
+import { Input } from './ui/input'
 
 export default function MeetingTypeList() {
 	const [meetingState, setMeetingState] = useState<
@@ -35,7 +36,7 @@ export default function MeetingTypeList() {
 	const { toast } = useToast()
 	const router = useRouter()
 	const [callDetails, setCallDetails] = useState<Call>()
-
+	const [joinCallURL, setJoinCallURL] = useState<String>('')
 	const createMeeting = async () => {
 		if (!client || !user) return
 		try {
@@ -81,6 +82,32 @@ export default function MeetingTypeList() {
 		}
 	}
 	const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
+
+	const joinMeeting = () => {
+		if (!joinCallURL) {
+			toast({
+				title: 'Please enter a valid meeting URL.',
+			});
+			return;
+		}
+	
+		const expectedURLPath = `/meeting/`;
+	
+		// Remove the protocol portion from the URL and extract only the path
+		const urlWithoutProtocol = joinCallURL.replace(/^(?:\/\/|[^/]+)*\//, '/');
+	
+		if (!urlWithoutProtocol.startsWith(expectedURLPath)) {
+			toast({
+				title: 'Please enter a valid meeting URL.',
+			});
+			return;
+		}
+	
+		// Assuming the joinCallURL is a valid URL, you can redirect the user to that URL
+		window.location.href = joinCallURL;
+	}
+	
+
 	return (
 		<section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
 			<HomeCard
@@ -123,7 +150,7 @@ export default function MeetingTypeList() {
 					'bg-yellow-700',
 				]}
 			/>
-			
+
 			{!callDetails ? (
 				<MeetingModal
 					isOpen={meetingState === 'isScheduleMeeting'}
@@ -177,12 +204,30 @@ export default function MeetingTypeList() {
 				/>
 			)}
 			<MeetingModal
+				isOpen={meetingState === 'isJoiningMeeting'}
+				onClose={() => setMeetingState(undefined)}
+				title="Join a Meeting"
+				className="text-center"
+				buttonText="Join Meeting"
+				handleClick={joinMeeting}
+			>
+				<div>
+					<Input
+						onChange={(e) => setJoinCallURL(e.target.value)}
+						placeholder="Meeting Link"
+						className="border-none bg-dark-3 focus-visible:ring-0 focus-visible-ring-offset-0"
+					/>
+				</div>
+			</MeetingModal>
+
+			<MeetingModal
 				isOpen={meetingState === 'isInstantMeeting'}
 				onClose={() => setMeetingState(undefined)}
 				title="Start an instant meeting"
 				className="text-center"
 				buttonText="Start Meeting"
 				handleClick={createMeeting}
+				// ButtonIcon={VideoIcon}
 			/>
 		</section>
 	)

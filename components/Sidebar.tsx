@@ -3,7 +3,7 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-import SideBarLinks from '@/constants'
+import { SideBarLinks } from '@/constants'
 
 export default function Sidebar() {
 	const pathName = usePathname()

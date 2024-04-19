@@ -24,7 +24,7 @@ export default function Home() {
 				/>{' '}
 				<div className="absolute top-32">
 					<div className="flex flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
-						<h2>Upcoming meeting at 12:30 PM </h2>
+						<h2 className='lg:mb-8 mb-4'>Upcoming meeting at 12:30 PM </h2>
 						<div className="flex flex-col gap-2">
 							<h1 className="text-4xl font-extrabold md:text-6xl lg:text-7xl">
 								{currentTime}

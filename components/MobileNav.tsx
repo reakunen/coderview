@@ -12,7 +12,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, Videotape } from 'lucide-react'
-import SideBarLinks from '@/constants'
+import { SideBarLinks } from '@/constants'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
 
