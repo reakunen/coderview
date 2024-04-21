@@ -70,6 +70,7 @@ export default function CallList({
 		}
 		if (type === 'recordings') fetchRecordings() 
 	}, [type, callRecordings])
+
 	return (
 		<div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
 			{calls && calls.length > 0 ? (

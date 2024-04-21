@@ -84,7 +84,7 @@ export default function MeetingTypeList() {
 	const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
 
 	const joinMeeting = () => {
-		if (!joinCallURL) {
+		if (typeof joinCallURL !== 'string' || !joinCallURL) {
 			toast({
 				title: 'Please enter a valid meeting URL.',
 			});
