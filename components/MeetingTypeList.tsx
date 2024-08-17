@@ -12,6 +12,7 @@ import {
 	UserRoundPlus,
 	Clipboard,
 	ClipboardList,
+	Code2Icon,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import MeetingModal from './MeetingModal'
@@ -24,7 +25,11 @@ import { Input } from './ui/input'
 
 export default function MeetingTypeList() {
 	const [meetingState, setMeetingState] = useState<
-		'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined
+		| 'isScheduleMeeting'
+		| 'isJoiningMeeting'
+		| 'isInstantMeeting'
+		| 'isCreateCode'
+		| undefined
 	>(undefined)
 	const { user } = useUser()
 	const client = useStreamVideoClient()
@@ -37,6 +42,24 @@ export default function MeetingTypeList() {
 	const router = useRouter()
 	const [callDetails, setCallDetails] = useState<Call>()
 	const [joinCallURL, setJoinCallURL] = useState<String>('')
+
+	const createCode = async () => {
+		if (!client || !user) return
+		try {
+			const id = crypto.randomUUID()
+
+			router.push(`/code/${id}`)
+			toast({
+				title: 'Hooray! Your coding environment has been created.',
+			})
+		} catch (error) {
+			console.log(error)
+			toast({
+				title: 'Failed to Create Meeting',
+				description: `Error: ${error}`,
+			})
+		}
+	}
 	const createMeeting = async () => {
 		if (!client || !user) return
 		try {
@@ -87,26 +110,25 @@ export default function MeetingTypeList() {
 		if (typeof joinCallURL !== 'string' || !joinCallURL) {
 			toast({
 				title: 'Please enter a valid meeting URL.',
-			});
-			return;
+			})
+			return
 		}
-	
-		const expectedURLPath = `/meeting/`;
-	
+
+		const expectedURLPath = `/meeting/`
+
 		// Remove the protocol portion from the URL and extract only the path
-		const urlWithoutProtocol = joinCallURL.replace(/^(?:\/\/|[^/]+)*\//, '/');
-	
+		const urlWithoutProtocol = joinCallURL.replace(/^(?:\/\/|[^/]+)*\//, '/')
+
 		if (!urlWithoutProtocol.startsWith(expectedURLPath)) {
 			toast({
 				title: 'Please enter a valid meeting URL.',
-			});
-			return;
+			})
+			return
 		}
-	
+
 		// Assuming the joinCallURL is a valid URL, you can redirect the user to that URL
-		window.location.href = joinCallURL;
+		window.location.href = joinCallURL
 	}
-	
 
 	return (
 		<section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -140,11 +162,21 @@ export default function MeetingTypeList() {
 					'bg-purple-700',
 				]}
 			/>
-			<HomeCard
+			{/* <HomeCard
 				IconSus={VideoIcon}
 				title="View Recordings"
 				description="Meeting recordings"
 				handleClick={() => setMeetingState('isJoiningMeeting')}
+				className={[
+					'bg-gradient-to-r from-yellow-500 to-amber-500',
+					'bg-yellow-700',
+				]}
+			/> */}
+			<HomeCard
+				IconSus={Code2Icon}
+				title="Create Code"
+				description="Create your collaborative IDE"
+				handleClick={() => setMeetingState('isCreateCode')}
 				className={[
 					'bg-gradient-to-r from-yellow-500 to-amber-500',
 					'bg-yellow-700',
@@ -227,6 +259,15 @@ export default function MeetingTypeList() {
 				className="text-center"
 				buttonText="Start Meeting"
 				handleClick={createMeeting}
+				// ButtonIcon={VideoIcon}
+			/>
+			<MeetingModal
+				isOpen={meetingState === 'isCreateCode'}
+				onClose={() => setMeetingState(undefined)}
+				title="Create Coding Environment"
+				className="text-center"
+				buttonText="Start Coding!"
+				handleClick={createCode}
 				// ButtonIcon={VideoIcon}
 			/>
 		</section>
