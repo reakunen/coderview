@@ -1,7 +1,5 @@
 # Coderview
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/7c8241eb-21cc-4b71-8d01-f69376db50d5">
-
 **Coderview** is a full-stack web application built with **Next.js** that enables users to create and join video conferencing rooms for free. The platform offers a suite of features designed to enhance your virtual meeting experience.
 
 ## Features
@@ -22,6 +20,9 @@
 - **Meeting Recordings:** Access and review recordings from previous meetings. Never miss a moment, even after the meeting is over.
 
 ### 📅 Scheduling
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/bb732d55-de9d-4f94-b610-982e8dbb4c3f">
+
 
 - **Future Meetings:** Plan ahead by scheduling meetings in advance. Ensure everyone is on the same page with easy-to-manage scheduling tools.
 
